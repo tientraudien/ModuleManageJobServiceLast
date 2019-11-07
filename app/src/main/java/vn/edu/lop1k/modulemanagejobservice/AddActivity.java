@@ -2,7 +2,6 @@ package vn.edu.lop1k.modulemanagejobservice;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -11,22 +10,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import vn.edu.lop1k.adapter.JobAdapter;
 import vn.edu.lop1k.model.Job;
 
 public class AddActivity extends AppCompatActivity {
 
     EditText edtTieuDe, edtDeadline, edtId;
-    EditText edtNoiDung, edtGioBatDau;
-    Button btnGioStart;
+    EditText edtNoiDung;
+
+    TextView txtTuyChinh;
     Button btnSetDeadline, btnLuuCV;
     Calendar calendar2=Calendar.getInstance();
     //SimpleDateFormat spdf1=new SimpleDateFormat("HH:mm");
@@ -44,7 +42,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
-        btnGioStart.setOnClickListener(new View.OnClickListener() {
+        btnSetDeadline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 xuLyDatGioBatDau();
@@ -59,6 +57,10 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    private void xuLyTuyChinh() {
+        //Intent intent= new Intent(AddActivity.this,TuyChinhTimeActivity.class);
+        //startActivity(intent);
+    }
 
 
     private void xuLyLuu() {
@@ -74,7 +76,7 @@ public class AddActivity extends AppCompatActivity {
         //edtDeadline.setText(dateFormat.format());
         try {
 
-            job.TimeBatDau = dateFormat.parse(edtGioBatDau.getText().toString());
+            job.TimeBatDau = dateFormat.parse(edtDeadline.getText().toString());
         } catch (ParseException ex) {
             Log.v("Exception", ex.getLocalizedMessage());
         }
@@ -102,17 +104,17 @@ public class AddActivity extends AppCompatActivity {
         };
         TimePickerDialog timePickerDialog=new TimePickerDialog(AddActivity.this,callBack,calendar2.get(Calendar.HOUR_OF_DAY),calendar2.get(Calendar.MINUTE),true);
         timePickerDialog.show();
-        edtGioBatDau.setText(dateFormat.format(calendar2.getTime()));
+        edtDeadline.setText(dateFormat.format(calendar2.getTime()));
     }
 
     private void addControls() {
         edtTieuDe=findViewById(R.id.edtTieuDe);
         edtNoiDung=findViewById(R.id.edtNoiDung);
-        btnGioStart=findViewById(R.id.btnGioBatDau);
-        edtGioBatDau=findViewById(R.id.edtGioBatDau);
-        btnSetDeadline=findViewById(R.id.btnSetDeadline);
-        btnLuuCV=findViewById(R.id.btnLuuCV);
+        txtTuyChinh=findViewById(R.id.txtTuyChinh);
         edtDeadline=findViewById(R.id.edtDeadline);
+        btnSetDeadline=findViewById(R.id.btnDeadline);
+        btnLuuCV=findViewById(R.id.btnLuuCV);
+
 
 
     }
