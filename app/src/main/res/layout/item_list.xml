@@ -33,7 +33,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/edtTime"
+        android:id="@+id/edtTimeConLai"
         android:layout_width="19dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

@@ -30,7 +30,8 @@
             android:textSize="25sp" />
 
         <Button
-            android:id="@+id/button"
+
+            android:id="@+id/btnAdd"
             android:textAlignment="center"
             android:layout_width="231dp"
             android:layout_height="wrap_content"
