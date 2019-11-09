@@ -1,5 +1,7 @@
 package vn.edu.lop1k.model;
 
+import android.app.TimePickerDialog;
+
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Calendar;
@@ -8,20 +10,18 @@ import java.util.Date;
 public class Job implements Serializable {
     public int id;
     public String Name;
-    public Date TimeBatDau;
-    public  Date TimeKeThuc;
-    public  Date TimConLai;
+    public Time GioKetThuc;
+    public Date NgayKeThuc;
     public String Note;
 
     public Job() {
     }
 
-    public Job(int id, String name, Date timeBatDau, Date timeKeThuc, Date timConLai, String note) {
+    public Job(int id, String name, Time gioKetThuc, Date ngayKeThuc, String note) {
         this.id = id;
         Name = name;
-        TimeBatDau = timeBatDau;
-        TimeKeThuc = timeKeThuc;
-        TimConLai = timConLai;
+        GioKetThuc = gioKetThuc;
+        NgayKeThuc = ngayKeThuc;
         Note = note;
     }
 
@@ -41,28 +41,20 @@ public class Job implements Serializable {
         Name = name;
     }
 
-    public Date getTimeBatDau() {
-        return TimeBatDau;
+    public Time getGioKetThuc() {
+        return GioKetThuc;
     }
 
-    public void setTimeBatDau(Date timeBatDau) {
-        TimeBatDau = timeBatDau;
+    public void setGioKetThuc(Time gioKetThuc) {
+        GioKetThuc = gioKetThuc;
     }
 
-    public Date getTimeKeThuc() {
-        return TimeKeThuc;
+    public Date getNgayKeThuc() {
+        return NgayKeThuc;
     }
 
-    public void setTimeKeThuc(Date timeKeThuc) {
-        TimeKeThuc = timeKeThuc;
-    }
-
-    public Date getTimConLai() {
-        return TimConLai;
-    }
-
-    public void setTimConLai(Date timConLai) {
-        TimConLai = timConLai;
+    public void setNgayKeThuc(Date ngayKeThuc) {
+        NgayKeThuc = ngayKeThuc;
     }
 
     public String getNote() {
@@ -73,3 +65,4 @@ public class Job implements Serializable {
         Note = note;
     }
 }
+

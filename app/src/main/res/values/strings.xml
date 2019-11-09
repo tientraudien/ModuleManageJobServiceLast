@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ModuleManageJobService</string>
+    <color name="bgTieuDe">#000033</color>
+    <color name="ftTieuDe">#e5e5ea</color>
+    <color name="bgDaXong">#c0e7cc</color>
+    <color name="bgChuaXong">#ff99b1</color>
+    <color name="bgDangLam">#ffff99</color>
 </resources>

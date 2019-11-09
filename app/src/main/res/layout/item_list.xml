@@ -8,6 +8,7 @@
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:text="Id"
+        android:textColor="@color/bgTieuDe"
 
         android:textSize="30sp" />
 
@@ -18,6 +19,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:textColor="@color/bgTieuDe"
             android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,6 +27,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:textColor="@color/bgTieuDe"
             android:id="@+id/txtNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,10 +40,10 @@
         android:layout_width="19dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorAccent"
+        android:background="@color/bgDangLam"
         android:ems="10"
         android:hint="10h02"
         android:inputType="time"
-        android:textSize="30sp" />
+        android:textSize="15sp" />
 
 </LinearLayout>

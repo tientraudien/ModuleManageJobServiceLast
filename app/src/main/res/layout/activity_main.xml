@@ -11,9 +11,9 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="69dp"
-        android:background="@color/colorAccent"
+        android:background="@color/bgTieuDe"
         android:text="Practice makes perfect"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/ftTieuDe"
         android:textSize="25sp" />
 
     <LinearLayout
@@ -43,6 +43,7 @@
 
     <ListView
         android:id="@+id/lvJobList"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

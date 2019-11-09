@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         addEvents();
 
 
+
     }
 
     private void addEvents() {
@@ -48,7 +50,12 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode==111 && resultCode==115)
         {
             Job job=(Job) data.getSerializableExtra("newJob");
+
             arrJob.add(job);
+            adapter.notifyDataSetChanged(); // dòng này để update lại adapter của bạn
+            //
+
+            Log.d("TAG", "onActivityResult: "+job.Name);
         }
     }
 
