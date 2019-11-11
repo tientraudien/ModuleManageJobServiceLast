@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -41,6 +43,19 @@ public class MainActivity extends AppCompatActivity {
                 xuLyAdd();
             }
         });
+        lvJobList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this,"xin chao",Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void xuLyClickItem() {
+
+            Intent intent= new Intent(MainActivity.this,AddActivity.class);
+            startActivity(intent);
 
     }
 
@@ -81,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         adapter= new JobAdapter(MainActivity.this,R.layout.item_list,arrJob);
         lvJobList.setAdapter(adapter);
     }
+
 
 
 }

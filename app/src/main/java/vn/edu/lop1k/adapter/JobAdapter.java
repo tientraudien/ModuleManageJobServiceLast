@@ -1,6 +1,7 @@
 package vn.edu.lop1k.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,37 +47,25 @@ public class JobAdapter extends ArrayAdapter<Job> {
         TextView Id=customView.findViewById(R.id.txtId);
         TextView Name=customView.findViewById(R.id.txtName);
         TextView Note=customView.findViewById(R.id.txtNote);
-        TextView TimeConlai=customView.findViewById(R.id.edtTimeConLai);
+
 
         Job job= this.objects.get(position);
         Id.setText(job.getId()+"");
         Name.setText(job.getName());
         Note.setText(job.getNote());
-        Date todayd=java.util.Calendar.getInstance().getTime();
-
-
-        String deadline=dateFormat.format(job.getNgayKeThuc())+" "+dateFormat.format(job.getGioKetThuc());
-        try {
-            Date dead = dateFormat.parse(deadline);
-            Date today=dateFormat.parse(dateFormat.format(todayd));
-            long diff = dead.getTime() - today.getTime();
-
-            long diffSeconds = diff / 1000;
-
-            long diffMinutes = diff / (60 * 1000);
-
-            long diffHours = diff / (60 * 60 * 1000);
-
-            //int thang=Integer.parseInt(tachNgay[1]);
-
-
-
-
-            TimeConlai.setText("Còn lại" + diffHours + " giờ " + diffMinutes + " phút " + diffSeconds + " giây" );
+        if(job.getTrangThai()==-1)
+        {
+            Name.setBackgroundColor(Color.RED);
         }
-        catch (ParseException ex) {
-            Log.v("Exception", ex.getLocalizedMessage());
+        if(job.getTrangThai()==0)
+        {
+            Name.setBackgroundColor(Color.YELLOW);
         }
+        if(job.getTrangThai()==1)
+        {
+            Name.setBackgroundColor(Color.GREEN);
+        }
+
 
 
        // Time.setText(dateFormat.format(job.getTime()));

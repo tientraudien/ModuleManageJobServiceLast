@@ -37,6 +37,34 @@
         android:inputType="textPersonName" />
 
     <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BẮT ĐẦU"
+        android:textSize="20sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtBatDau"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/btnBauDau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SET"
+            android:textColor="@color/bgTieuDe"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <TextView
         android:textColor="@color/bgTieuDe"
         android:id="@+id/textView7"
         android:layout_width="match_parent"

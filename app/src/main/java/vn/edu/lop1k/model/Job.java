@@ -10,19 +10,25 @@ import java.util.Date;
 public class Job implements Serializable {
     public int id;
     public String Name;
+    public Time GioBatDau;
+    public Date NgayBatDau;
     public Time GioKetThuc;
     public Date NgayKeThuc;
     public String Note;
+    public  int TrangThai;
 
     public Job() {
     }
 
-    public Job(int id, String name, Time gioKetThuc, Date ngayKeThuc, String note) {
+    public Job(int id, String name, Time gioBatDau, Date ngayBatDau, Time gioKetThuc, Date ngayKeThuc, String note, int trangThai) {
         this.id = id;
         Name = name;
+        GioBatDau = gioBatDau;
+        NgayBatDau = ngayBatDau;
         GioKetThuc = gioKetThuc;
         NgayKeThuc = ngayKeThuc;
         Note = note;
+        TrangThai = trangThai;
     }
 
     public int getId() {
@@ -39,6 +45,22 @@ public class Job implements Serializable {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public Time getGioBatDau() {
+        return GioBatDau;
+    }
+
+    public void setGioBatDau(Time gioBatDau) {
+        GioBatDau = gioBatDau;
+    }
+
+    public Date getNgayBatDau() {
+        return NgayBatDau;
+    }
+
+    public void setNgayBatDau(Date ngayBatDau) {
+        NgayBatDau = ngayBatDau;
     }
 
     public Time getGioKetThuc() {
@@ -63,6 +85,14 @@ public class Job implements Serializable {
 
     public void setNote(String note) {
         Note = note;
+    }
+
+    public int getTrangThai() {
+        return TrangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        TrangThai = trangThai;
     }
 }
 
