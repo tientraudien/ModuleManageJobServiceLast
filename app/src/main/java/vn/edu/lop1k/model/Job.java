@@ -10,24 +10,22 @@ import java.util.Date;
 public class Job implements Serializable {
     public int id;
     public String Name;
-    public Time GioBatDau;
-    public Date NgayBatDau;
-    public Time GioKetThuc;
-    public Date NgayKeThuc;
     public String Note;
+    // public Time GioBatDau;
+    public String NgayBatDau;
+    // public Time GioKetThuc;
+    public String NgayKeThuc;
     public  int TrangThai;
 
     public Job() {
     }
 
-    public Job(int id, String name, Time gioBatDau, Date ngayBatDau, Time gioKetThuc, Date ngayKeThuc, String note, int trangThai) {
+    public Job(int id, String name, String note, String ngayBatDau, String ngayKeThuc, int trangThai) {
         this.id = id;
         Name = name;
-        GioBatDau = gioBatDau;
-        NgayBatDau = ngayBatDau;
-        GioKetThuc = gioKetThuc;
-        NgayKeThuc = ngayKeThuc;
         Note = note;
+        NgayBatDau = ngayBatDau;
+        NgayKeThuc = ngayKeThuc;
         TrangThai = trangThai;
     }
 
@@ -47,44 +45,28 @@ public class Job implements Serializable {
         Name = name;
     }
 
-    public Time getGioBatDau() {
-        return GioBatDau;
-    }
-
-    public void setGioBatDau(Time gioBatDau) {
-        GioBatDau = gioBatDau;
-    }
-
-    public Date getNgayBatDau() {
-        return NgayBatDau;
-    }
-
-    public void setNgayBatDau(Date ngayBatDau) {
-        NgayBatDau = ngayBatDau;
-    }
-
-    public Time getGioKetThuc() {
-        return GioKetThuc;
-    }
-
-    public void setGioKetThuc(Time gioKetThuc) {
-        GioKetThuc = gioKetThuc;
-    }
-
-    public Date getNgayKeThuc() {
-        return NgayKeThuc;
-    }
-
-    public void setNgayKeThuc(Date ngayKeThuc) {
-        NgayKeThuc = ngayKeThuc;
-    }
-
     public String getNote() {
         return Note;
     }
 
     public void setNote(String note) {
         Note = note;
+    }
+
+    public String getNgayBatDau() {
+        return NgayBatDau;
+    }
+
+    public void setNgayBatDau(String ngayBatDau) {
+        NgayBatDau = ngayBatDau;
+    }
+
+    public String getNgayKeThuc() {
+        return NgayKeThuc;
+    }
+
+    public void setNgayKeThuc(String ngayKeThuc) {
+        NgayKeThuc = ngayKeThuc;
     }
 
     public int getTrangThai() {

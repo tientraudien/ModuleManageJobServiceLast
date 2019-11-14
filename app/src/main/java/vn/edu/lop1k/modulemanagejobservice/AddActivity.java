@@ -1,5 +1,6 @@
 package vn.edu.lop1k.modulemanagejobservice;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,7 +29,8 @@ import java.util.Date;
 import vn.edu.lop1k.model.Job;
 
 public class AddActivity extends AppCompatActivity {
-
+    MyDatabase myDatabase;
+    public static String DATABASE_NAME="JobManagement.db";
     EditText edtTieuDe, edtDeadline, edtId, edtBatDau;
     EditText edtNoiDung, edtChonNgayDead, edtChonGioDead, edtCHonNgayBD, edtChonGioBD ;
     Button btnChonNgay, btnChonGio, btnOkDead;
@@ -36,6 +39,7 @@ public class AddActivity extends AppCompatActivity {
     Button btnSetDeadline, btnLuuCV,btnBatDau;
     private int mYear, mMonth, mDay, mHour, mMinute;
     Calendar calendar2=Calendar.getInstance();
+    Intent intent;
     //SimpleDateFormat spdf1=new SimpleDateFormat("HH:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
     DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
@@ -48,6 +52,7 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
         addControls();
         addEvents();
     }
@@ -77,7 +82,19 @@ public class AddActivity extends AppCompatActivity {
                 xuLySetBatDau();
             }
         });
+       // Intent intent2=getIntent();
+       // Bundle bundle=intent2.getBundleExtra("mybudle");
+       // if(intent2 !=null) {
+       ///     int pos=bundle.getInt("x");
+       //     Job job= (Job) bundle.getSerializable("y");
 
+       //     edtTieuDe.setText(job.getName());
+       //     edtNoiDung.setText(job.getNote());
+       //     intent2.putExtra("editedJob", job);
+       //     intent2.putExtra("pos",pos);
+        //    setResult(2, intent2);
+        //    finish();
+      //  }
 
     }
 
@@ -237,14 +254,15 @@ public class AddActivity extends AppCompatActivity {
     private void xuLyLuu() {
         try {
 
-        Intent intent=getIntent();
 
-        Job job=new Job();
-        job.id=1;
-        job.Name=edtTieuDe.getText().toString();
+        Job job1=new Job();
+            job1.id=1;
+            job1.Name=edtTieuDe.getText().toString();
+            job1.Note=edtNoiDung.getText().toString();
 
-            job.NgayKeThuc = formatter.parse(edtChonNgayDead.getText().toString());
-            job.GioKetThuc=new java.sql.Time(formattertime.parse(edtChonGioDead.getText().toString()).getTime());
+            job1.NgayBatDau=edtCHonNgayBD.getText().toString()+" "+edtChonGioBD.getText().toString();
+            job1.NgayKeThuc = edtChonNgayDead.getText().toString()+" "+edtChonGioDead.getText().toString();
+            //job.GioKetThuc=new java.sql.Time(formattertime.parse(edtChonGioDead.getText().toString()).getTime());
 
             Date todayd = java.util.Calendar.getInstance().getTime();
             Date today = dateFormat.parse(dateFormat.format(todayd));
@@ -254,21 +272,28 @@ public class AddActivity extends AppCompatActivity {
             Date ngayDead=formatter.parse(ngayDeadlined);
             if(today.before(ngayBatDau))
             {
-                job.TrangThai=-1;
+                job1.TrangThai=-1;
             }
             if(today.after(ngayBatDau))
             {
                 if(today.before(ngayDead)) {
-                    job.TrangThai = 0;
+                    job1.TrangThai = 0;
                 }
                 else
                 {
-                    job.TrangThai=1;
+                    job1.TrangThai=1;
                 }
             }
-          job.Note = edtNoiDung.getText().toString();
-            intent.putExtra("newJob", job);
-
+           long kq= myDatabase.addJob(job1);
+            if(kq>0)
+            {
+                Toast.makeText(AddActivity.this,"Thêm thành công",Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(AddActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
+            }
+            intent.putExtra("newJob", job1);
             setResult(115, intent);
             finish();
         }
@@ -296,7 +321,14 @@ public class AddActivity extends AppCompatActivity {
         return  calendar2.getTime();
     }
 
+
+
     private void addControls() {
+        intent=getIntent();
+
+        myDatabase=new MyDatabase(AddActivity.this,DATABASE_NAME,null,1);
+
+
         edtTieuDe=findViewById(R.id.edtTieuDe);
         edtNoiDung=findViewById(R.id.edtNoiDung);
         txtTuyChinh=findViewById(R.id.txtTuyChinh);
@@ -309,6 +341,12 @@ public class AddActivity extends AppCompatActivity {
         btnBatDau=findViewById(R.id.btnBauDau);
 
         edtBatDau=findViewById(R.id.edtBatDau);
+        //Intent intent=getIntent();
+        //Bundle bundle=intent.getBundleExtra("mybudle");
+        //Job job= (Job) bundle.getSerializable("x");
+        //edtTieuDe.setText(job.getName());
+        //edtNoiDung.setText(job.getNote());
+
 
     }
 }
