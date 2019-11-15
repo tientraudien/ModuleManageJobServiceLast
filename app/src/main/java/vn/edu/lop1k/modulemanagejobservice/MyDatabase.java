@@ -48,6 +48,7 @@ public class MyDatabase extends SQLiteOpenHelper {
                 String NgayBatDau = cursor.getString(3);
                 String NgayketThuc = cursor.getString(4);
                 Integer trangThai = cursor.getInt(5);
+
                 // Time GioBatDau = NgayBatDau.getTime();
                 Job job = new Job(id, name, note, NgayBatDau, NgayketThuc, trangThai);
                 Jobs.add(job);

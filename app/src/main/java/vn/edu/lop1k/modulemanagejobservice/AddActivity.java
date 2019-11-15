@@ -3,9 +3,11 @@ package vn.edu.lop1k.modulemanagejobservice;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,12 +21,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import vn.edu.lop1k.model.Job;
 
@@ -35,17 +39,18 @@ public class AddActivity extends AppCompatActivity {
     EditText edtNoiDung, edtChonNgayDead, edtChonGioDead, edtCHonNgayBD, edtChonGioBD ;
     Button btnChonNgay, btnChonGio, btnOkDead;
     TextView txtTuyChinh;
-    RadioButton radChuaXong, radDangLam, radDaXong;
+    RadioButton radChuaXong, radDangLam, radDaXong, radMinute;
     Button btnSetDeadline, btnLuuCV,btnBatDau;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    Calendar calendar2=Calendar.getInstance();
+    Calendar calendar2, calendar3;
     Intent intent;
-    //SimpleDateFormat spdf1=new SimpleDateFormat("HH:mm");
+    int minute,day,week,laplai;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
     DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
     SimpleDateFormat formattertime= new SimpleDateFormat("hh:mm");
 
     AlarmManager alarmManager;
+    PendingIntent pendingIntent;
 
 
     @Override
@@ -58,12 +63,6 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
-        btnSetDeadline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                xuLyDatGioBatDau();
-            }
-        });
         btnLuuCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,23 +81,36 @@ public class AddActivity extends AppCompatActivity {
                 xuLySetBatDau();
             }
         });
-       // Intent intent2=getIntent();
-       // Bundle bundle=intent2.getBundleExtra("mybudle");
-       // if(intent2 !=null) {
-       ///     int pos=bundle.getInt("x");
-       //     Job job= (Job) bundle.getSerializable("y");
-
-       //     edtTieuDe.setText(job.getName());
-       //     edtNoiDung.setText(job.getNote());
-       //     intent2.putExtra("editedJob", job);
-       //     intent2.putExtra("pos",pos);
-        //    setResult(2, intent2);
-        //    finish();
-      //  }
+        txtTuyChinh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                xuLyLapLai();
+            }
+        });
 
     }
 
-    private void xuLySetBatDau() {
+    private void xuLyLapLai() {
+        Intent intent=new Intent(AddActivity.this,TuyChinhTimeActivity.class);
+        startActivityForResult(intent,99);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 99&&resultCode==33) {
+
+            minute = data.getIntExtra("minute", 0);
+            day = data.getIntExtra("day", 0);
+            week = data.getIntExtra("week", 0);
+            laplai = data.getIntExtra("laplai", 0);
+        }
+
+    }
+
+
+
+        private void xuLySetBatDau() {
         final Dialog deadDialog= new Dialog(AddActivity.this);
         deadDialog.setTitle("Set Deadline");
         deadDialog.setContentView(R.layout.itemfordialog);
@@ -147,6 +159,9 @@ public class AddActivity extends AppCompatActivity {
                                           int monthOfYear, int dayOfMonth) {
 
                         edtCHonNgayBD.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        calendar2.set(Calendar.YEAR,year);
+                        calendar2.set(Calendar.MONTH,monthOfYear);
+                        calendar2.set(Calendar.DAY_OF_MONTH,dayOfMonth);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -167,6 +182,9 @@ public class AddActivity extends AppCompatActivity {
                                           int minute) {
 
                         edtChonGioBD.setText(minute + ":" + hourOfDay);
+                        calendar2.set(Calendar.HOUR_OF_DAY,view.getCurrentHour());
+                        calendar2.set(Calendar.MINUTE,view.getCurrentMinute());
+
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
@@ -222,6 +240,8 @@ public class AddActivity extends AppCompatActivity {
                                           int minute) {
 
                         edtChonGioDead.setText(minute + ":" + hourOfDay);
+                        calendar3.set(Calendar.HOUR_OF_DAY,view.getCurrentHour());
+                        calendar3.set(Calendar.MINUTE,view.getCurrentMinute());
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
@@ -242,6 +262,9 @@ public class AddActivity extends AppCompatActivity {
                                           int monthOfYear, int dayOfMonth) {
 
                         edtChonNgayDead.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                        calendar3.set(Calendar.YEAR,year);
+                        calendar3.set(Calendar.MONTH,monthOfYear);
+                        calendar3.set(Calendar.DAY_OF_MONTH,dayOfMonth);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -253,7 +276,9 @@ public class AddActivity extends AppCompatActivity {
 
     private void xuLyLuu() {
         try {
-
+            Intent intent=getIntent();
+            Intent intent1=new Intent(AddActivity.this,Receiver.class);
+            alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
 
         Job job1=new Job();
             job1.id=1;
@@ -266,10 +291,44 @@ public class AddActivity extends AppCompatActivity {
 
             Date todayd = java.util.Calendar.getInstance().getTime();
             Date today = dateFormat.parse(dateFormat.format(todayd));
+
             String ngayBatDaud=edtCHonNgayBD.getText().toString();
             Date ngayBatDau=formatter.parse(ngayBatDaud);
+
+
             String ngayDeadlined=edtChonNgayDead.getText().toString();
             Date ngayDead=formatter.parse(ngayDeadlined);
+
+            pendingIntent=PendingIntent.getBroadcast(
+                    AddActivity.this,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
+            //pendingIntent=PendingIntent.getService(AddActivity.this,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            if(minute!=0)
+            {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
+                        1000 * 60*minute, pendingIntent);
+            }
+            if(day!=0)
+            {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY*day, pendingIntent);
+            }
+            if(week!=0)
+            {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY*day*7, pendingIntent);
+            }
+            if(laplai==1)
+            {
+                alarmManager.set(AlarmManager.RTC_WAKEUP,calendar2.getTimeInMillis(),pendingIntent);
+            }
+            Intent cancellationIntent = new Intent(this, CancelReceiver.class);
+            cancellationIntent.putExtra("key", pendingIntent);
+            PendingIntent cancellationPendingIntent = PendingIntent.getBroadcast(this, 0, cancellationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar3.getTimeInMillis(), cancellationPendingIntent);
+
+
+
             if(today.before(ngayBatDau))
             {
                 job1.TrangThai=-1;
@@ -284,6 +343,8 @@ public class AddActivity extends AppCompatActivity {
                     job1.TrangThai=1;
                 }
             }
+            /*
+
            long kq= myDatabase.addJob(job1);
             if(kq>0)
             {
@@ -292,7 +353,7 @@ public class AddActivity extends AppCompatActivity {
             else
             {
                 Toast.makeText(AddActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
-            }
+            }*/
             intent.putExtra("newJob", job1);
             setResult(115, intent);
             finish();
@@ -300,28 +361,7 @@ public class AddActivity extends AppCompatActivity {
         catch (ParseException ex) {
             Log.v("Exception", ex.getLocalizedMessage());
         }
-
-
-
-
     }
-
-    private Date xuLyDatGioBatDau() {
-        TimePickerDialog.OnTimeSetListener callBack=new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                calendar2.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                calendar2.set(Calendar.MINUTE,minute);
-               // edtGioBatDau.setText(spdf1.format(calendar2.getTime()));
-            }
-        };
-        TimePickerDialog timePickerDialog=new TimePickerDialog(AddActivity.this,callBack,calendar2.get(Calendar.HOUR_OF_DAY),calendar2.get(Calendar.MINUTE),true);
-        timePickerDialog.show();
-        edtDeadline.setText(dateFormat.format(calendar2.getTime()));
-        return  calendar2.getTime();
-    }
-
-
 
     private void addControls() {
         intent=getIntent();
@@ -341,12 +381,10 @@ public class AddActivity extends AppCompatActivity {
         btnBatDau=findViewById(R.id.btnBauDau);
 
         edtBatDau=findViewById(R.id.edtBatDau);
-        //Intent intent=getIntent();
-        //Bundle bundle=intent.getBundleExtra("mybudle");
-        //Job job= (Job) bundle.getSerializable("x");
-        //edtTieuDe.setText(job.getName());
-        //edtNoiDung.setText(job.getNote());
-
-
+        alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
+        calendar2=Calendar.getInstance();
+        calendar3=Calendar.getInstance();
+        txtTuyChinh=findViewById(R.id.txtTuyChinh);
+        radMinute=findViewById(R.id.radMinute);
     }
 }

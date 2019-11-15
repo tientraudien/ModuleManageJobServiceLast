@@ -15,15 +15,40 @@
         android:textSize="20sp" />
 
     <RadioGroup
+        android:id="@+id/radTime"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content">
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/radMinute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Theo phút" />
+
+        <RadioButton
+            android:id="@+id/radDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Theo ngày" />
 
+        <RadioButton
+            android:id="@+id/radWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Theo tuần" />
+
+        <RadioButton
+            android:id="@+id/radNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Không lặp lại" />
+
     </RadioGroup>
+
+    <Button
+        android:id="@+id/btnOKK"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OKK" />
 
 </LinearLayout>
