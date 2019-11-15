@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,15 +51,22 @@ public class JobAdapter extends ArrayAdapter<Job> {
         LayoutInflater inflater=this.context.getLayoutInflater();
         View customView=inflater.inflate(this.resource,null);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-
-        TextView Id=customView.findViewById(R.id.txtId);
+        final Job job= this.objects.get(position);
+       // TextView Id=customView.findViewById(R.id.txtId);
         TextView Name=customView.findViewById(R.id.txtName);
         TextView Note=customView.findViewById(R.id.txtNote);
         TextView NgayBatDau=customView.findViewById(R.id.txtNote);
+        Button btnXoa=customView.findViewById(R.id.btnXoa);
+        btnXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                xuLyXoa(job);
+            }
+        });
 
 
-        Job job= this.objects.get(position);
-        Id.setText(job.getId()+"");
+
         Name.setText(job.getName());
         Note.setText(job.getNote());
         if(job.getTrangThai()==-1)
@@ -79,6 +88,23 @@ public class JobAdapter extends ArrayAdapter<Job> {
 
        // Time.setText(dateFormat.format(job.getTime()));
         return customView;
+    }
+
+    private void xuLyXoa(Job job) {
+        long kq=MainActivity.myDatabase.deleteJob(job);
+        if(kq>0)
+        {
+            Toast.makeText(context,"Thành công",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(context,"Thất bại",Toast.LENGTH_LONG).show();
+        }
+
+
+        MainActivity.arrJob.clear();
+        MainActivity.arrJob.addAll(MainActivity.myDatabase.getAllJob());
+        notifyDataSetChanged();
     }
 
 

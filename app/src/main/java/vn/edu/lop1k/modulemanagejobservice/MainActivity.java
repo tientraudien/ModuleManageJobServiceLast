@@ -32,12 +32,13 @@ import vn.edu.lop1k.model.Job;
 public class MainActivity extends AppCompatActivity {
     public static String DATABASE_NAME="JobManagement.db";
     String DB_PATH_SUFFIX="/databases/";
+    public  static Job selectedJob;
     public static SQLiteDatabase database=null;
     JobAdapter adapter;
     ListView lvJobList;
     Button btnAdd;
-    ArrayList<Job> arrJob;
-    MyDatabase myDatabase;
+    public  static ArrayList<Job> arrJob;
+    public  static MyDatabase myDatabase;
     DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
     SimpleDateFormat formattertime= new SimpleDateFormat("hh:mm");
 
@@ -106,33 +107,10 @@ public class MainActivity extends AppCompatActivity {
         return getApplicationInfo().dataDir+DB_PATH_SUFFIX+DATABASE_NAME;
     }
 
-    private void hienThiJob() {
-       /* try {
-            database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-            Cursor cursor = database.rawQuery("SELECT * FROM Job", null);
-            adapter.clear();
-            while (cursor.moveToNext()) {
-                Integer id = cursor.getInt(0);
-                String name = cursor.getString(1);
-                String note=cursor.getString(2);
-                Date NgayBatDau=formatter.parse(cursor.getString(3));
-                Date NgayketThuc=formatter.parse(cursor.getString(4));
-                Integer trangThai=cursor.getInt(5);
-              // Time GioBatDau = NgayBatDau.getTime();
 
 
 
-                Job job = new Job(id, name, note,NgayBatDau,NgayketThuc,trangThai);
-                adapter.add(job);
-            }
-            cursor.close();
-        }
-        catch (ParseException ex) {
-            Log.v("Exception", ex.getLocalizedMessage());
-        }*/
 
-
-    }
 
     private void addEvents() {
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -145,16 +123,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent= new Intent(view.getContext(), AddActivity.class);
-               Bundle bundle= new Bundle();
-                Job job1=adapter.getItem(position);
-                bundle.putInt("y",position);
-               // bundle.putSerializable("x",job1);
-                //intent.putExtra("mybudle",bundle);
-                intent.putExtra("x",position);
-                intent.putExtra("y", job1);
 
-                startActivityForResult(intent,1);
+                selectedJob=adapter.getItem(position);
+                startActivity(intent);
 
+            }
+        });
+        lvJobList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedJob=adapter.getItem(position);
+                return false;
             }
         });
 
@@ -213,6 +192,12 @@ public class MainActivity extends AppCompatActivity {
         adapter= new JobAdapter(MainActivity.this,R.layout.item_list,arrJob);
         lvJobList.setAdapter(adapter);
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        addControls();
+        adapter.notifyDataSetChanged();
     }
 
 

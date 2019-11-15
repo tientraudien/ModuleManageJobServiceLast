@@ -39,18 +39,26 @@ public class AddActivity extends AppCompatActivity {
     EditText edtNoiDung, edtChonNgayDead, edtChonGioDead, edtCHonNgayBD, edtChonGioBD ;
     Button btnChonNgay, btnChonGio, btnOkDead;
     TextView txtTuyChinh;
-    RadioButton radChuaXong, radDangLam, radDaXong, radMinute;
+    RadioButton  radMinute;
     Button btnSetDeadline, btnLuuCV,btnBatDau;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    Calendar calendar2, calendar3;
-    Intent intent;
+    Calendar calendar2=Calendar.getInstance(), calendar3;
     int minute,day,week,laplai;
+    Intent intent;
+    PendingIntent pendingIntent;
+    Date todayd;
+    Date today;
+    String ngayBatDaud ;
+    Date ngayBatDau ;
+    String ngayDeadlined ;
+    Date ngayDead ;
+    //SimpleDateFormat spdf1=new SimpleDateFormat("HH:mm");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
     DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
     SimpleDateFormat formattertime= new SimpleDateFormat("hh:mm");
 
     AlarmManager alarmManager;
-    PendingIntent pendingIntent;
+
 
 
     @Override
@@ -87,7 +95,14 @@ public class AddActivity extends AppCompatActivity {
                 xuLyLapLai();
             }
         });
+        if(MainActivity.selectedJob!=null) {
+            edtTieuDe.setText(MainActivity.selectedJob.getName());
+            edtTieuDe.setEnabled(false);
+            edtNoiDung.setText(MainActivity.selectedJob.getNote());
+            edtBatDau.setText(MainActivity.selectedJob.getNgayBatDau());
+            edtDeadline.setText(MainActivity.selectedJob.getNgayKeThuc());
 
+        }
     }
 
     private void xuLyLapLai() {
@@ -118,6 +133,18 @@ public class AddActivity extends AppCompatActivity {
         btnChonNgay=deadDialog.findViewById(R.id.btnChonNgayDead);
         btnChonGio=deadDialog.findViewById(R.id.btnChonGioDead);
         edtCHonNgayBD=deadDialog.findViewById(R.id.edtChonNgayDead);
+           // edtCHonNgayBD=deadDialog.findViewById(R.id.edtChonNgayDead);
+            edtChonGioBD=deadDialog.findViewById(R.id.edtChonGioDead);
+            edtChonNgayDead=deadDialog.findViewById(R.id.edtChonNgayDead);
+            edtChonGioDead=deadDialog.findViewById(R.id.edtChonGioDead);
+            if(MainActivity.selectedJob!=null) {
+                String[] BD = MainActivity.selectedJob.getNgayBatDau().split(" ");
+                edtCHonNgayBD.setText(BD[0]);
+                edtChonGioBD.setText(BD[1]);
+                String[] KT = MainActivity.selectedJob.getNgayKeThuc().split(" ");
+                edtChonNgayDead.setText(KT[0]);
+                edtChonGioDead.setText(KT[1]);
+            }
         btnOkDead=deadDialog.findViewById(R.id.btnOkDead);
         btnOkDead.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,13 +226,37 @@ public class AddActivity extends AppCompatActivity {
         deadDialog.setCanceledOnTouchOutside(false);
         btnChonNgay=deadDialog.findViewById(R.id.btnChonNgayDead);
         btnChonGio=deadDialog.findViewById(R.id.btnChonGioDead);
+
+
+        edtCHonNgayBD=deadDialog.findViewById(R.id.edtChonNgayDead);
+        edtChonGioBD=deadDialog.findViewById(R.id.edtChonGioDead);
         edtChonNgayDead=deadDialog.findViewById(R.id.edtChonNgayDead);
+        edtChonGioDead=deadDialog.findViewById(R.id.edtChonGioDead);
+        if(MainActivity.selectedJob!=null) {
+            String[] BD = MainActivity.selectedJob.getNgayBatDau().split(" ");
+            edtCHonNgayBD.setText(BD[0]);
+            edtChonGioBD.setText(BD[1]);
+            String[] KT = MainActivity.selectedJob.getNgayKeThuc().split(" ");
+            edtChonNgayDead.setText(KT[0]);
+            edtChonGioDead.setText(KT[1]);
+        }
         btnOkDead=deadDialog.findViewById(R.id.btnOkDead);
         btnOkDead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtDeadline.setText(edtChonNgayDead.getText()+"|"+ edtChonGioDead.getText());
-               deadDialog.dismiss();
+                try {
+                    edtDeadline.setText(edtChonNgayDead.getText() + "|" + edtChonGioDead.getText());
+                    todayd = java.util.Calendar.getInstance().getTime();
+                    today = dateFormat.parse(dateFormat.format(todayd));
+                    ngayBatDaud = edtCHonNgayBD.getText().toString();
+                    ngayBatDau = formatter.parse(ngayBatDaud);
+                    ngayDeadlined = edtChonNgayDead.getText().toString();
+                    ngayDead = formatter.parse(ngayDeadlined);
+                    deadDialog.dismiss();
+                }
+                catch (ParseException ex) {
+                    Log.v("Exception", ex.getLocalizedMessage());
+                }
             }
         });
         edtChonGioDead=deadDialog.findViewById(R.id.edtChonGioDead);
@@ -275,13 +326,72 @@ public class AddActivity extends AppCompatActivity {
 
 
     private void xuLyLuu() {
-        try {
+        Intent intent1=new Intent(AddActivity.this,Receiver.class);
+        if(MainActivity.selectedJob!=null)
+        {
+            MainActivity.selectedJob.Note=edtNoiDung.getText().toString();
+
+            MainActivity.selectedJob.NgayBatDau=edtBatDau.getText().toString();
+            MainActivity.selectedJob.NgayKeThuc=edtDeadline.getText().toString();
+            pendingIntent=PendingIntent.getBroadcast(
+                    AddActivity.this,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
+            //pendingIntent=PendingIntent.getService(AddActivity.this,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
+            if(MainActivity.selectedJob.getTrangThai()!=1) {
+                if (minute != 0) {
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
+                            1000 * 60 * minute, pendingIntent);
+                }
+                if (day != 0) {
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
+                            AlarmManager.INTERVAL_DAY * day, pendingIntent);
+                }
+                if (week != 0) {
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
+                            AlarmManager.INTERVAL_DAY * day * 7, pendingIntent);
+                }
+                if (laplai == 1) {
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
+                }
+                Intent cancellationIntent = new Intent(this, CancelReceiver.class);
+                cancellationIntent.putExtra("key", pendingIntent);
+                PendingIntent cancellationPendingIntent = PendingIntent.getBroadcast(this, 0, cancellationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar3.getTimeInMillis(), cancellationPendingIntent);
+            }
+
+            if(today!=null) {
+                if (today.before(ngayBatDau)) {
+                    MainActivity.selectedJob.TrangThai = -1;
+                }
+                if (today.after(ngayBatDau)) {
+                    if (today.before(ngayDead)) {
+                        MainActivity.selectedJob.TrangThai = 0;
+                    } else {
+                        MainActivity.selectedJob.TrangThai = 1;
+                    }
+                }
+            }
+
+            long kq=myDatabase.updateJob(MainActivity.selectedJob);
+            if(kq>0)
+            {
+                Toast.makeText(AddActivity.this,"Thành công",Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(AddActivity.this,"Thất bại",Toast.LENGTH_LONG).show();
+            }
+            MainActivity.selectedJob=null;
+            finish();
+
+        }
+        else
+        {
             Intent intent=getIntent();
-            Intent intent1=new Intent(AddActivity.this,Receiver.class);
+
             alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
 
-        Job job1=new Job();
-            job1.id=1;
+            Job job1=new Job();
+
             job1.Name=edtTieuDe.getText().toString();
             job1.Note=edtNoiDung.getText().toString();
 
@@ -289,15 +399,7 @@ public class AddActivity extends AppCompatActivity {
             job1.NgayKeThuc = edtChonNgayDead.getText().toString()+" "+edtChonGioDead.getText().toString();
             //job.GioKetThuc=new java.sql.Time(formattertime.parse(edtChonGioDead.getText().toString()).getTime());
 
-            Date todayd = java.util.Calendar.getInstance().getTime();
-            Date today = dateFormat.parse(dateFormat.format(todayd));
 
-            String ngayBatDaud=edtCHonNgayBD.getText().toString();
-            Date ngayBatDau=formatter.parse(ngayBatDaud);
-
-
-            String ngayDeadlined=edtChonNgayDead.getText().toString();
-            Date ngayDead=formatter.parse(ngayDeadlined);
 
             pendingIntent=PendingIntent.getBroadcast(
                     AddActivity.this,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -343,6 +445,7 @@ public class AddActivity extends AppCompatActivity {
                     job1.TrangThai=1;
                 }
             }
+
             /*
 
            long kq= myDatabase.addJob(job1);
@@ -354,14 +457,19 @@ public class AddActivity extends AppCompatActivity {
             {
                 Toast.makeText(AddActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
             }*/
+            long kq = myDatabase.addJob(job1);
+            if (kq > 0) {
+                Toast.makeText(AddActivity.this, "Thêm thành công", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(AddActivity.this, "Thêm thất bại", Toast.LENGTH_LONG).show();
+            }
             intent.putExtra("newJob", job1);
             setResult(115, intent);
             finish();
         }
-        catch (ParseException ex) {
-            Log.v("Exception", ex.getLocalizedMessage());
-        }
+
     }
+
 
     private void addControls() {
         intent=getIntent();
@@ -374,9 +482,7 @@ public class AddActivity extends AppCompatActivity {
         txtTuyChinh=findViewById(R.id.txtTuyChinh);
         edtDeadline=findViewById(R.id.edtDeadline);
         btnSetDeadline=findViewById(R.id.btnDeadline);
-        radChuaXong=findViewById(R.id.radChuaLam);
-        radDangLam=findViewById(R.id.radDangLam);
-        radDaXong=findViewById(R.id.radDaXong);
+
         btnLuuCV=findViewById(R.id.btnLuuCV);
         btnBatDau=findViewById(R.id.btnBauDau);
 

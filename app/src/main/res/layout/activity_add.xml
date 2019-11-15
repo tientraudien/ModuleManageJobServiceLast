@@ -99,42 +99,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"/>
 
-    <TextView
-        android:textColor="@color/bgTieuDe"
-        android:id="@+id/textView5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Trạng thái công việc"
-        android:textSize="20sp" />
-
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <RadioButton
-            android:textColor="@color/bgTieuDe"
-            android:id="@+id/radChuaLam"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/bgChuaXong"
-            android:text="Chưa làm" />
-
-        <RadioButton
-            android:textColor="@color/bgTieuDe"
-            android:id="@+id/radDangLam"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:background="@color/bgDangLam"
-            android:text="Đang làm" />
-
-        <RadioButton
-            android:textColor="@color/bgTieuDe"
-            android:id="@+id/radDaXong"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/bgDaXong"
-            android:text="Xong" />
 
         <TextView
             android:textColor="@color/bgTieuDe"
