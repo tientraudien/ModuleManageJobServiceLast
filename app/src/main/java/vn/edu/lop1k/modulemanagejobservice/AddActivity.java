@@ -349,7 +349,7 @@ public class AddActivity extends AppCompatActivity {
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
                             AlarmManager.INTERVAL_DAY * day * 7, pendingIntent);
                 }
-                if (laplai == 1) {
+                else  {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
                 }
                 Intent cancellationIntent = new Intent(this, CancelReceiver.class);
@@ -420,7 +420,7 @@ public class AddActivity extends AppCompatActivity {
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY*day*7, pendingIntent);
             }
-            if(laplai==1)
+            else
             {
                 alarmManager.set(AlarmManager.RTC_WAKEUP,calendar2.getTimeInMillis(),pendingIntent);
             }
@@ -445,18 +445,6 @@ public class AddActivity extends AppCompatActivity {
                     job1.TrangThai=1;
                 }
             }
-
-            /*
-
-           long kq= myDatabase.addJob(job1);
-            if(kq>0)
-            {
-                Toast.makeText(AddActivity.this,"Thêm thành công",Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                Toast.makeText(AddActivity.this,"Thêm thất bại",Toast.LENGTH_LONG).show();
-            }*/
             long kq = myDatabase.addJob(job1);
             if (kq > 0) {
                 Toast.makeText(AddActivity.this, "Thêm thành công", Toast.LENGTH_LONG).show();
@@ -469,8 +457,6 @@ public class AddActivity extends AppCompatActivity {
         }
 
     }
-
-
     private void addControls() {
         intent=getIntent();
 

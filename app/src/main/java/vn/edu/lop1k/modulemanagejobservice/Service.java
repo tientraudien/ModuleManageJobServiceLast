@@ -25,11 +25,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Service extends android.app.Service {
-
-    Button btnTamDung;
-    private static final String KEY_TEXT_REPLY = "key_text_reply";
-    private static final   String ACTION_SNOOZE = "Snooze";
-    private static final String EXTRA_NOTIFICATION_ID = "111";
     MediaPlayer mediaPlayer;
     @Nullable
     @Override
@@ -40,9 +35,6 @@ public class Service extends android.app.Service {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent intent2=new Intent(this,ScreenActivity.class);
-        startActivity(intent2);
-
         setAlarm();
         return START_STICKY;
     }
