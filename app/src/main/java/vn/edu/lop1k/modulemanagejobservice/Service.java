@@ -41,7 +41,7 @@ public class Service extends android.app.Service {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     private void setAlarm() {
-        Toast.makeText(this,"hey hey",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Làm việc đi!!!",Toast.LENGTH_LONG).show();
         mediaPlayer=MediaPlayer.create(this,R.raw.nhacchuong);
         mediaPlayer.start();
         xuLyNotification();
