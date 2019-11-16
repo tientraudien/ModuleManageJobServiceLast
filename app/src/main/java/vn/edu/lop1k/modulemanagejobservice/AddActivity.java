@@ -127,7 +127,7 @@ public class AddActivity extends AppCompatActivity {
 
         private void xuLySetBatDau() {
         final Dialog deadDialog= new Dialog(AddActivity.this);
-        deadDialog.setTitle("Set Deadline");
+        deadDialog.setTitle("Set thời gian");
         deadDialog.setContentView(R.layout.itemfordialog);
         deadDialog.setCanceledOnTouchOutside(false);
         btnChonNgay=deadDialog.findViewById(R.id.btnChonNgayDead);
@@ -149,7 +149,7 @@ public class AddActivity extends AppCompatActivity {
         btnOkDead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtBatDau.setText(edtCHonNgayBD.getText()+"|"+ edtChonGioBD.getText());
+                edtBatDau.setText(edtCHonNgayBD.getText()+" "+ edtChonGioBD.getText());
                 deadDialog.dismiss();
             }
         });
@@ -245,7 +245,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    edtDeadline.setText(edtChonNgayDead.getText() + "|" + edtChonGioDead.getText());
+                    edtDeadline.setText(edtChonNgayDead.getText() + " " + edtChonGioDead.getText());
                     todayd = java.util.Calendar.getInstance().getTime();
                     today = dateFormat.parse(dateFormat.format(todayd));
                     ngayBatDaud = edtCHonNgayBD.getText().toString();
@@ -395,8 +395,8 @@ public class AddActivity extends AppCompatActivity {
             job1.Name=edtTieuDe.getText().toString();
             job1.Note=edtNoiDung.getText().toString();
 
-            job1.NgayBatDau=edtCHonNgayBD.getText().toString()+" "+edtChonGioBD.getText().toString();
-            job1.NgayKeThuc = edtChonNgayDead.getText().toString()+" "+edtChonGioDead.getText().toString();
+            job1.NgayBatDau=edtBatDau.getText().toString();
+            job1.NgayKeThuc =edtDeadline.getText().toString();
             //job.GioKetThuc=new java.sql.Time(formattertime.parse(edtChonGioDead.getText().toString()).getTime());
 
 
